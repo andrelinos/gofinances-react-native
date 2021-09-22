@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
-import { Feather } from '@expo/vector-icons';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { Feather } from '@expo/vector-icons';
 
 export const Container = styled.View`
     width: 100%;
     height: ${RFPercentage(42)}px;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     background-color: ${({ theme }) => theme.colors.primary};
 `;
 
@@ -16,6 +18,8 @@ export const UserWrapper = styled.View`
     justify-content: space-between;
     align-items: center;
     padding: 0 ${RFValue(24)}px;
+
+    margin-top: ${getStatusBarHeight() + RFValue(28) }px;
 `;
 export const UserInfo = styled.View`
     flex-direction: row;
