@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+
 import {
     Container,
     UserWrapper,
@@ -7,8 +7,10 @@ import {
     Photo,
     User,
     UserGreeting,
-    UserName
+    UserName,
+    Icon
 } from './styles';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export function Header() {
     return (
@@ -23,6 +25,7 @@ export function Header() {
                         <UserName>Andrelino</UserName>
                     </User>
                 </UserInfo>
+                <Icon name="log-out" />
             </UserWrapper>
         </Container>
     );
