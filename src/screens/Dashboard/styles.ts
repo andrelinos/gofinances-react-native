@@ -28,7 +28,7 @@ export const Transactions = styled.View`
 `;
 
 export const TransactionTitle = styled.Text`
-    font-family: ${({ theme }) => theme.fonts.regular};
+    font-family: ${({ theme }) => theme.fonts.medium};
     font-size: ${RFValue(18)}px;
     margin-bottom: ${RFValue(16)}px;
 `;

@@ -60,7 +60,7 @@ export function Dashbard() {
             title: 'Alugúel apartamento',
             amount: '1.000,00',
             category: {
-                name: 'Compras',
+                name: 'Moradia',
                 icon: 'shopping-bag'
             },
             date: '13/04/2021'
@@ -91,7 +91,7 @@ export function Dashbard() {
             </HighlightCards>
 
             <Transactions>
-                <TransactionTitle>Listagem</TransactionTitle>
+                <TransactionTitle>Histórico de transações</TransactionTitle>
 
                 <TransactionsList
                     data={data}
