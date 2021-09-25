@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+// import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 import { DataListProps } from './index';
 
@@ -37,9 +37,9 @@ export const TransactionsList = styled(
     FlatList as new () => FlatList<DataListProps>
 ).attrs({
     showsVerticalScrollIndicator: false,
-    contentContainerStyle: {
-        paddingBottom: getBottomSpace()
-    }
+    // contentContainerStyle: {
+    //     paddingBottom: getBottomSpace()
+    // }
 })`
     flex: 1;
 `;
