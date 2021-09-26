@@ -3,7 +3,7 @@ import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 type CardTypeProps = {
-    type: 'up' | 'down' | 'total';
+    type: 'income' | 'outcome' | 'total';
 };
 
 export const Container = styled.View<CardTypeProps>`
@@ -34,13 +34,13 @@ export const Icon = styled(Feather)<CardTypeProps>`
     font-size: ${RFValue(40)}px;
 
     ${({ type }) =>
-        type === 'up' &&
+        type === 'income' &&
         css`
             color: ${({ theme }) => theme.colors.success};
         `}
 
     ${({ type }) =>
-        type === 'down' &&
+        type === 'outcome' &&
         css`
             color: ${({ theme }) => theme.colors.attention};
         `}

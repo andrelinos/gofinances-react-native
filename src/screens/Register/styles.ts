@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
     flex: 1;
@@ -27,4 +27,14 @@ export const Form = styled.View`
     width: 100%;
     flex: 1;
     padding: ${RFValue(24)}px;
+    justify-content: space-between;
 `;
+
+export const TransactionButtonsContainer = styled.View`
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: ${RFValue(8)}px 0;
+`;
+
+export const FieldsContainer = styled.View``;
