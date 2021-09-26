@@ -11,6 +11,7 @@ import {
     FieldsContainer,
     TransactionButtonsContainer
 } from './styles';
+import { CategorySelect } from '../../components/Form/CategorySelect';
 
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
@@ -47,6 +48,7 @@ export function Register() {
                             }
                         />
                     </TransactionButtonsContainer>
+                    <CategorySelect title="Categoria" />
                 </FieldsContainer>
 
                 <Button title="Cadastrar" />
