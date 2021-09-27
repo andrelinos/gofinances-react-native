@@ -11,8 +11,9 @@ import {
     Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 
-import theme from './src/global/styles/theme';
+import { SafeAreaView } from './src/global/styles/styles';
 import { Register } from './src/screens/Register';
+import theme from './src/global/styles/theme';
 
 export default function App() {
     const [fontsLoad] = useFonts({
@@ -26,13 +27,15 @@ export default function App() {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <StatusBar
-                barStyle="light-content"
-                backgroundColor={theme.colors.primary}
-            />
-            <Register />
-            <View style={{ paddingBottom: getBottomSpace() }} />
-        </ThemeProvider>
+        <SafeAreaView>
+            <ThemeProvider theme={theme}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={theme.colors.primary}
+                />
+                <Register />
+                <View style={{ paddingBottom: getBottomSpace() }} />
+            </ThemeProvider>
+        </SafeAreaView>
     );
 }

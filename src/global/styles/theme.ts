@@ -16,6 +16,7 @@ export default {
 
         title: '#363f5f',
         text: '#969cb2',
+        text_light: '#b3bad4',
         text_dark: '#141414',
 
         background: '#f0f2f5'

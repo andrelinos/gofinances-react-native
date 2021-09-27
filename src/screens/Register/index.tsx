@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 import { Input } from '../../components/Form/Input';
+import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
+
+import { CategorySelect } from '../CategorySelect';
 
 import {
     Container,
@@ -11,13 +15,27 @@ import {
     FieldsContainer,
     TransactionButtonsContainer
 } from './styles';
-import { CategorySelect } from '../../components/Form/CategorySelect';
+import { Modal } from 'react-native';
 
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
+    const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+
+    const [category, setCategory] = useState({
+        key: 'category',
+        name: 'Category'
+    });
 
     function handleTransactionTypeSelect(type: 'income' | 'outcome') {
         setTransactionType(type);
+    }
+
+    function handleOpenSelectCategoryModal() {
+        setCategoryModalOpen(true);
+    }
+
+    function handleCloseSelectCategoryModal() {
+        setCategoryModalOpen(false);
     }
 
     return (
@@ -48,11 +66,22 @@ export function Register() {
                             }
                         />
                     </TransactionButtonsContainer>
-                    <CategorySelect title="Categoria" />
+                    <CategorySelectButton
+                        title="Categoria"
+                        onPress={handleOpenSelectCategoryModal}
+                    />
                 </FieldsContainer>
 
-                <Button title="Cadastrar" />
+                <Button title="Enviar" />
             </Form>
+
+            <Modal visible={categoryModalOpen}>
+                <CategorySelect
+                    category={category}
+                    setCategory={setCategory}
+                    closeSelectCategory={handleCloseSelectCategoryModal}
+                />
+            </Modal>
         </Container>
     );
 }
