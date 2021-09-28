@@ -27,15 +27,15 @@ export default function App() {
     }
 
     return (
-        <SafeAreaView>
-            <ThemeProvider theme={theme}>
-                <StatusBar
-                    barStyle="light-content"
-                    backgroundColor={theme.colors.primary}
-                />
-                <Register />
-                <View style={{ paddingBottom: getBottomSpace() }} />
-            </ThemeProvider>
-        </SafeAreaView>
+        // <SafeAreaView>
+        <ThemeProvider theme={theme}>
+            <StatusBar
+                barStyle="light-content"
+                backgroundColor={theme.colors.primary}
+            />
+            <Register />
+            <View style={{ paddingBottom: getBottomSpace() }} />
+        </ThemeProvider>
+        // </SafeAreaView>
     );
 }
