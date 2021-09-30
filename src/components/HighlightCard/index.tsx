@@ -12,7 +12,7 @@ import {
 
 interface HighlightCardProps {
     title: string;
-    amount: string;
+    amount: number;
     lastTransaction: string;
     type: 'income' | 'outcome' | 'total';
 }

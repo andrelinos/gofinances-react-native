@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
@@ -22,13 +22,13 @@ import {
 
 interface FormDataProps {
     name: string;
-    amount: string;
+    amount: number;
 }
 
 const schema = Yup.object().shape({
     name: Yup.string()
-        .min(2, 'A descrição deve ter no mínimo 2 caracteres')
-        .required('Informe a descrição da transação'),
+    .required('Informe a descrição da transação')
+    .min(2, 'A descrição deve ter no mínimo 2 caracteres'),
     amount: Yup.number()
         .typeError('Informe um valor numérico')
         .positive('Infome um valor positivo')
@@ -93,7 +93,7 @@ export function Register() {
                 <Form>
                     <FieldsContainer>
                         <InputForm
-                            name={'name'}
+                            name="name"
                             control={control}
                             placeholder="Descrição"
                             autoCapitalize="sentences"
@@ -101,7 +101,7 @@ export function Register() {
                             error={errors.name && errors.name.message}
                         />
                         <InputForm
-                            name={'amount'}
+                            name="amount"
                             control={control}
                             placeholder="Preço"
                             keyboardType="numeric"
