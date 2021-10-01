@@ -1,4 +1,6 @@
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
@@ -12,8 +14,9 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import { SafeAreaView } from './src/global/styles/styles';
-import { Register } from './src/screens/Register';
+
 import theme from './src/global/styles/theme';
+import { AppRoutes } from './src/routes/app.routes';
 
 export default function App() {
     const [fontsLoad] = useFonts({
@@ -27,15 +30,17 @@ export default function App() {
     }
 
     return (
-        // <SafeAreaView>
-        <ThemeProvider theme={theme}>
-            <StatusBar
-                barStyle="light-content"
-                backgroundColor={theme.colors.primary}
-            />
-            <Register />
-            <View style={{ paddingBottom: getBottomSpace() }} />
-        </ThemeProvider>
-        // </SafeAreaView>
+        <NavigationContainer>
+            <SafeAreaProvider>
+                <ThemeProvider theme={theme}>
+                    <StatusBar
+                        barStyle="light-content"
+                        backgroundColor={theme.colors.primary}
+                    />
+                    <AppRoutes />
+                    <View style={{ paddingBottom: getBottomSpace() }} />
+                </ThemeProvider>
+            </SafeAreaProvider>
+        </NavigationContainer>
     );
 }
