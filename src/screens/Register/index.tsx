@@ -20,12 +20,12 @@ import {
     TransactionButtonsContainer
 } from './styles';
 
-interface FormDataProps {
+export interface FormDataProps {
     name: string;
     amount: number;
 }
 
-const schema = Yup.object().shape({
+const schema = Yup.object({
     name: Yup.string()
     .required('Informe a descrição da transação')
     .min(2, 'A descrição deve ter no mínimo 2 caracteres'),
@@ -48,7 +48,7 @@ export function Register() {
         control,
         handleSubmit,
         formState: { errors }
-    } = useForm({
+    } = useForm<FormDataProps>({
         resolver: yupResolver(schema)
     });
 

@@ -5,11 +5,12 @@ import { Control, Controller } from 'react-hook-form';
 import { Input } from '../Form/Input';
 
 import { Container, Error } from './styles';
+import { FormDataProps } from '../../screens/Register';
 
 interface InputFormProps extends TextInputProps {
-    control: Control;
-    name: string;
-    error: string;
+    control: Control<FormDataProps>;
+    name: 'name' | 'amount';
+    error: string | undefined;
 }
 
 export function InputForm({ control, name, error, ...rest }: InputFormProps) {
@@ -18,7 +19,11 @@ export function InputForm({ control, name, error, ...rest }: InputFormProps) {
             <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                    <Input onChangeText={onChange} value={value} {...rest} />
+                    <Input
+                        onChangeText={onChange}
+                        value={value as string}
+                        {...rest}
+                    />
                 )}
                 name={name}
             />

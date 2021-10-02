@@ -7,6 +7,9 @@
       "**/*"
     ]
   },
+  "android": {
+    "softwareKeyboardLayoutMode": "pan"
+  },
   "updates": {
     "fallbackToCacheTimeout": 0
     },
