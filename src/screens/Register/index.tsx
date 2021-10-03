@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { Modal, Keyboard, Alert } from 'react-native';
+
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -13,6 +14,7 @@ import { CategorySelect } from '../CategorySelect';
 
 import {
     Container,
+    GhTouchableWithoutFeedback as GestureHandlerTouchableWithoutFeedback,
     Header,
     Title,
     Form,
@@ -27,8 +29,8 @@ export interface FormDataProps {
 
 const schema = Yup.object({
     name: Yup.string()
-    .required('Informe a descrição da transação')
-    .min(2, 'A descrição deve ter no mínimo 2 caracteres'),
+        .required('Informe a descrição da transação')
+        .min(2, 'A descrição deve ter no mínimo 2 caracteres'),
     amount: Yup.number()
         .typeError('Informe um valor numérico')
         .positive('Infome um valor positivo')
@@ -84,8 +86,8 @@ export function Register() {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <Container>
+        <Container>
+            <GestureHandlerTouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <Header>
                     <Title>Cadastro</Title>
                 </Header>
@@ -144,7 +146,7 @@ export function Register() {
                         closeSelectCategory={handleCloseSelectCategoryModal}
                     />
                 </Modal>
-            </Container>
-        </TouchableWithoutFeedback>
+            </GestureHandlerTouchableWithoutFeedback>
+        </Container>
     );
 }

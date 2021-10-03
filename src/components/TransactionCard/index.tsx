@@ -20,7 +20,7 @@ interface CategoryProps {
 export interface TransactionCardDataProps {
     type: 'positive' | 'negative';
     title: string;
-    amount: number;
+    amount: string;
     category: CategoryProps;
     date: string;
 }

@@ -8,9 +8,9 @@ import {
     User,
     UserGreeting,
     UserName,
+    LogoutButton,
     Icon
 } from './styles';
-import { RFValue } from 'react-native-responsive-fontsize';
 
 export function Header() {
     return (
@@ -25,7 +25,9 @@ export function Header() {
                         <UserName>Andrelino</UserName>
                     </User>
                 </UserInfo>
-                <Icon name="log-out" />
+                <LogoutButton onPress={() => {}}>
+                    <Icon name="log-out" />
+                </LogoutButton>
             </UserWrapper>
         </Container>
     );

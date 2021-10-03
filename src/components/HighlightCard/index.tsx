@@ -12,7 +12,7 @@ import {
 
 interface HighlightCardProps {
     title: string;
-    amount: number;
+    amount: string;
     lastTransaction: string;
     type: 'income' | 'outcome' | 'total';
 }
@@ -37,7 +37,7 @@ export function HighlightCard({
             </Header>
 
             <Footer>
-                <Amount type={type}>{amount}</Amount>
+                <Amount type={type}>R$ {amount}</Amount>
                 <LastTransaction type={type}>{lastTransaction}</LastTransaction>
             </Footer>
         </Container>

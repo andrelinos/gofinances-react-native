@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components/native';
-import { TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
-import theme from '../../../global/styles/theme';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface IconPros {
     type: 'income' | 'outcome';
@@ -13,7 +12,7 @@ interface ContainerProps {
     type: 'income' | 'outcome';
 }
 
-export const Container = styled(TouchableOpacity)<ContainerProps>`
+export const Container = styled(RectButton)<ContainerProps>`
     width: 48%;
     border-radius: 5px;
     border: 1.5px solid ${({ theme }) => theme.colors.text};

@@ -25,7 +25,7 @@ export function Dashboard() {
             id: '1',
             type: 'positive',
             title: 'Desenvolvimento de site',
-            amount: 12.000,
+            amount: 'R$ 12.000',
             category: {
                 name: 'Vendas',
                 icon: 'dollar-sign'
@@ -36,7 +36,7 @@ export function Dashboard() {
             id: '2',
             type: 'negative',
             title: 'Compra de carro',
-            amount: 27.000,
+            amount: 'R$ 27.000',
             category: {
                 name: 'Compras',
                 icon: 'shopping-bag'
@@ -47,7 +47,7 @@ export function Dashboard() {
             id: '3',
             type: 'positive',
             title: 'Desenvolvimento sistema',
-            amount: 30.000,
+            amount: 'R$ 30.000',
             category: {
                 name: 'Vendas',
                 icon: 'dollar-sign'
@@ -58,7 +58,7 @@ export function Dashboard() {
             id: '4',
             type: 'negative',
             title: 'Alugúel apartamento',
-            amount: 1.000,
+            amount: 'R$ 1.000',
             category: {
                 name: 'Moradia',
                 icon: 'shopping-bag'
@@ -73,19 +73,19 @@ export function Dashboard() {
                 <HighlightCard
                     type="income"
                     title="Entradas"
-                    amount={17.400}
+                    amount='17.400,00'
                     lastTransaction="Última entrada dia 13 de abril"
                 />
                 <HighlightCard
                     type="outcome"
                     title="Saídas"
-                    amount={1.259}
+                    amount='1.259,00'
                     lastTransaction="Última saída dia 14 de abril"
                 />
                 <HighlightCard
                     type="total"
                     title="Total"
-                    amount={16.141}
+                    amount='16.141,00'
                     lastTransaction="01 a 16 de abril"
                 />
             </HighlightCards>

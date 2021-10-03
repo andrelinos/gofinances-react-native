@@ -11,7 +11,7 @@ export const Container = styled.View<CardTypeProps>`
         type === 'total' ? theme.colors.secondary : theme.colors.shape};
     width: ${RFValue(300)}px;
     border-radius: ${RFValue(5)}px;
-    padding: ${RFValue(19)}px ${RFValue(23)}px;
+    padding: ${RFValue(16)}px ${RFValue(23)}px;
     padding-bottom: ${RFValue(42)}px;
 
     margin-right: ${RFValue(16)}px;
