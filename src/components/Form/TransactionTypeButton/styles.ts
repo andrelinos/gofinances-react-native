@@ -12,14 +12,10 @@ interface ContainerProps {
     type: 'income' | 'outcome';
 }
 
-export const Container = styled(RectButton)<ContainerProps>`
+export const Container = styled.View<ContainerProps>`
     width: 48%;
     border-radius: 5px;
     border: 1.5px solid ${({ theme }) => theme.colors.text};
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    padding: ${RFValue(16)}px;
 
     ${({ isActive, type }) =>
         isActive &&
@@ -36,6 +32,13 @@ export const Container = styled(RectButton)<ContainerProps>`
         background-color: ${({ theme }) => theme.colors.attention_light}
         border-color: ${({ theme }) => theme.colors.attention_light};
     `};
+`;
+
+export const Button = styled(RectButton)`
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    padding: ${RFValue(16)}px;
 `;
 
 export const Icon = styled(Feather)<IconPros>`

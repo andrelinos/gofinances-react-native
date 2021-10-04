@@ -8,9 +8,9 @@ interface ButtonProps extends RectButtonProps {
     onPress: () => void;
 }
 
-export function Button({ title, ...rest }: ButtonProps) {
+export function Button({ title, onPress, ...rest }: ButtonProps) {
     return (
-        <Container {...rest}>
+        <Container onPress={onPress} {...rest}>
             <Title>{title}</Title>
         </Container>
     );
