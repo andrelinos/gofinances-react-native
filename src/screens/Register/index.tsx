@@ -4,8 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 import uuid from 'react-native-uuid';
+
+import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
@@ -23,6 +25,10 @@ import {
     FieldsContainer,
     TransactionButtonsContainer
 } from './styles';
+
+type NavigationProps = {
+    navigate: (Screen:string) => void,
+}
 
 export interface FormDataProps {
     name: string;
@@ -50,9 +56,12 @@ export function Register() {
         name: 'Categoria'
     });
 
+    const navigation = useNavigation<NavigationProps>();
+
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors }
     } = useForm<FormDataProps>({
         resolver: yupResolver(schema)
@@ -80,12 +89,12 @@ export function Register() {
         }
 
         const newTransaction = {
-            id: uuid(),
+            id: String(uuid.v4()),
             name: form.name,
             amount: form.amount,
             transactionType,
             category: category.key,
-            date: new Date(),
+            date: new Date()
         };
 
         try {
@@ -95,6 +104,15 @@ export function Register() {
             const dataFormated = [...currentData, newTransaction];
 
             await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormated));
+
+            reset();
+            setTransactionType('');
+            setCategory({
+                key: 'category',
+                name: 'Categoria'
+            });
+
+            navigation.navigate('Listagem');
         } catch (error) {
             console.error(error);
             Alert.alert('Não foi possível salvar');
