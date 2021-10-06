@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 
 import { Header } from '../../components/Header';
 import { HighlightCard } from '../../components/HighlightCard';
@@ -20,52 +26,44 @@ export interface DataListProps extends TransactionCardDataProps {
 }
 
 export function Dashboard() {
-    const data: DataListProps[] = [
-        {
-            id: '1',
-            type: 'positive',
-            title: 'Desenvolvimento de site',
-            amount: 'R$ 12.000',
-            category: {
-                name: 'Vendas',
-                icon: 'dollar-sign'
-            },
-            date: '13/04/2021'
-        },
-        {
-            id: '2',
-            type: 'negative',
-            title: 'Compra de carro',
-            amount: 'R$ 27.000',
-            category: {
-                name: 'Compras',
-                icon: 'shopping-bag'
-            },
-            date: '13/04/2021'
-        },
-        {
-            id: '3',
-            type: 'positive',
-            title: 'Desenvolvimento sistema',
-            amount: 'R$ 30.000',
-            category: {
-                name: 'Vendas',
-                icon: 'dollar-sign'
-            },
-            date: '13/04/2021'
-        },
-        {
-            id: '4',
-            type: 'negative',
-            title: 'Alugúel apartamento',
-            amount: 'R$ 1.000',
-            category: {
-                name: 'Moradia',
-                icon: 'shopping-bag'
-            },
-            date: '13/04/2021'
-        }
-    ];
+    const [data, setData] = useState<DataListProps[]>([]);
+
+    async function loadTransactions() {
+        const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
+        const response = await AsyncStorage.getItem(dataKey);
+
+        const transactions = response ? JSON.parse(response) : [];
+
+        const transactionsFormated: DataListProps[] = transactions.map(
+            (item: DataListProps) => {
+                const amount = Number(item.amount).toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+
+                const date = Intl.DateTimeFormat('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                }).format(new Date(item.date));
+
+                return {
+                    id: item.id,
+                    name: item.name,
+                    type: item.type,
+                    category: item.category,
+                    amount,
+                    date
+                };
+            }
+        );
+
+        setData(transactionsFormated);
+    }
+    useEffect(() => {
+        loadTransactions();
+    }, []);
+
     return (
         <Container>
             <Header />
@@ -73,19 +71,19 @@ export function Dashboard() {
                 <HighlightCard
                     type="income"
                     title="Entradas"
-                    amount='17.400,00'
+                    amount="17.400,00"
                     lastTransaction="Última entrada dia 13 de abril"
                 />
                 <HighlightCard
                     type="outcome"
                     title="Saídas"
-                    amount='1.259,00'
+                    amount="1.259,00"
                     lastTransaction="Última saída dia 14 de abril"
                 />
                 <HighlightCard
                     type="total"
                     title="Total"
-                    amount='16.141,00'
+                    amount="16.141,00"
                     lastTransaction="01 a 16 de abril"
                 />
             </HighlightCards>
@@ -96,9 +94,7 @@ export function Dashboard() {
                 <TransactionsList
                     data={data}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <TransactionCard data={item} />
-                    )}
+                    renderItem={({ item }) => <TransactionCard data={item} />}
                 />
             </Transactions>
         </Container>

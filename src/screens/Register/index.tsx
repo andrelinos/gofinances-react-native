@@ -9,6 +9,8 @@ import uuid from 'react-native-uuid';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 
+import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 
@@ -27,8 +29,8 @@ import {
 } from './styles';
 
 type NavigationProps = {
-    navigate: (Screen:string) => void,
-}
+    navigate: (Screen: string) => void;
+};
 
 export interface FormDataProps {
     name: string;
@@ -48,8 +50,6 @@ const schema = Yup.object({
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-
-    const dataKey = '@GoFinancesAndrelino:transactions';
 
     const [category, setCategory] = useState({
         key: 'category',
@@ -96,6 +96,8 @@ export function Register() {
             category: category.key,
             date: new Date()
         };
+
+        const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
 
         try {
             const data = await AsyncStorage.getItem(dataKey);
