@@ -13,7 +13,7 @@ import {
 } from './styles';
 
 export interface TransactionCardDataProps {
-    type: 'positive' | 'negative';
+    type: 'income' | 'outcome';
     name: string;
     amount: string;
     category: string;
@@ -31,7 +31,7 @@ export function TransactionCard({ data }: TransactionCardProps) {
         <Container>
             <Title>{data.name}</Title>
             <Amount type={data.type}>
-                {data.type === 'negative' && '- '}
+                {data.type === 'outcome' && '- '}
                 {data.amount}
             </Amount>
             <Footer>
