@@ -10,16 +10,6 @@ export const Container = styled.View`
     background-color: ${({ theme }) => theme.colors.background};
 `;
 
-export const HighlightCards = styled.ScrollView.attrs({
-    horizontal: true,
-    showsHorizontalScrollIndicator: false,
-    contentContainerStyle: { paddingHorizontal: 24 }
-})`
-    width: 100%;
-    position: absolute;
-    margin-top: ${RFPercentage(20)}px;
-`;
-
 export const Transactions = styled.View`
     flex: 1;
     padding: 0 ${RFValue(24)}px;
@@ -36,7 +26,7 @@ export const TransactionTitle = styled.Text`
 export const TransactionsList = styled(
     FlatList as new () => FlatList<DataListProps>
 ).attrs({
-    showsVerticalScrollIndicator: false,
+    showsVerticalScrollIndicator: false
     // contentContainerStyle: {
     //     paddingBottom: getBottomSpace()
     // }

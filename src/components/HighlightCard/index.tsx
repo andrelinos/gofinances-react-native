@@ -10,7 +10,7 @@ import {
     LastTransaction
 } from './styles';
 
-interface HighlightCardProps {
+export interface HighlightCardProps {
     title: string;
     amount: string;
     lastTransaction: string;
