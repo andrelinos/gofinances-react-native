@@ -7,12 +7,8 @@ import {
 
 import { Container } from './styles';
 
-interface HighlightCardsProps extends HighlightCardProps {
-    type: 'income' | 'outcome' | 'total';
-}
-
 export function HighlightCards() {
-    const data: any = HighlightCard;
+    const data: HighlightCardProps = HighlightCard;
 
     return (
         <Container>
