@@ -7,9 +7,7 @@ import {
 
 import { Container } from './styles';
 
-export function HighlightCards() {
-    const data: HighlightCardProps = HighlightCard;
-
+export function HighlightCards(data: HighlightCardProps) {
     return (
         <Container>
             <HighlightCard
@@ -17,18 +15,20 @@ export function HighlightCards() {
                 title="Entradas"
                 amount={data.amount}
                 lastTransaction={data.lastTransaction}
-            />
+                data={data.data}            />
             <HighlightCard
                 type={data.type}
                 title="Saídas"
                 amount={data.amount}
                 lastTransaction={data.lastTransaction}
+                data={data.data}  
             />
             <HighlightCard
                 type={data.type}
                 title="Total"
                 amount={data.amount}
                 lastTransaction={data.lastTransaction}
+                data={data.data}  
             />
         </Container>
     );

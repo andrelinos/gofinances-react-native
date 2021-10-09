@@ -10,11 +10,21 @@ import {
     LastTransaction
 } from './styles';
 
+type HighlightProps = {
+    total: string;
+};
+
+interface HighlightData {
+    entries: HighlightProps;
+    expensives: HighlightProps;
+}
+
 export interface HighlightCardProps {
     title: string;
     amount: string;
     lastTransaction: string;
     type: 'income' | 'outcome' | 'total';
+    data: HighlightData;
 }
 
 const icon = {
@@ -37,8 +47,10 @@ export function HighlightCard({
             </Header>
 
             <Footer>
-                <Amount type={type}>R$ {amount}</Amount>
-                <LastTransaction type={type}>{lastTransaction}</LastTransaction>
+                <Amount type={type}>{amount && `R$ ${amount}`}</Amount>
+                <LastTransaction type={type}>
+                    {lastTransaction && lastTransaction}
+                </LastTransaction>
             </Footer>
         </Container>
     );
