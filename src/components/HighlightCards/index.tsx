@@ -1,34 +1,45 @@
 import React from 'react';
 
-import {
-    HighlightCard,
-    HighlightCardProps
-} from '../../components/HighlightCard';
+import { HighlightCard } from '../../components/HighlightCard';
 
 import { Container } from './styles';
 
-export function HighlightCards(data: HighlightCardProps) {
+type HighlightProps = {
+    total: string;
+};
+
+interface HighlightCardProps {
+    type: 'income' | 'outcome' | 'total';
+    title: 'Entradas' | 'Saídas' | 'Total';
+    amount: string;
+    lastTransaction: string;
+}
+
+export function HighlightCards({
+    type,
+    amount,
+    lastTransaction
+}: HighlightCardProps) {
     return (
         <Container>
             <HighlightCard
-                type={data.type}
+                type={type}
                 title="Entradas"
-                amount={data.amount}
-                lastTransaction={data.lastTransaction}
-                data={data.data}            />
+                amount={amount}
+                lastTransaction={lastTransaction} 
+           />
             <HighlightCard
-                type={data.type}
+                type={type}
                 title="Saídas"
-                amount={data.amount}
-                lastTransaction={data.lastTransaction}
-                data={data.data}  
+                amount={amount}
+                lastTransaction={lastTransaction}
             />
             <HighlightCard
-                type={data.type}
+                type={type}
                 title="Total"
-                amount={data.amount}
-                lastTransaction={data.lastTransaction}
-                data={data.data}  
+                amount={amount}
+                lastTransaction={lastTransaction}
+  
             />
         </Container>
     );

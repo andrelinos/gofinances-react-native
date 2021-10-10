@@ -10,7 +10,6 @@ import 'intl/locale-data/jsonp/pt-BR';
 import { Header } from '../../components/Header';
 
 import { HighlightCards } from '../../components/HighlightCards';
-import { HighlightCardProps } from '../../components/HighlightCard';
 
 import {
     TransactionCard,
@@ -37,12 +36,19 @@ interface HighlightData {
     expensives: HighlightProps;
 }
 
-export function Dashboard(data: HighlightCardProps) {
+interface HighlightCardProps {
+    title?: string;
+    amount: string;
+    lastTransaction: string;
+    type: 'income' | 'outcome' | 'total';
+}
+
+export function Dashboard({type, title, amount, lastTransaction}: HighlightCardProps) {
     const [transactions, setTransactions] = useState<DataListProps[]>([]);
     const [highlightData, setHighlightData] = useState<HighlightData>(
         {} as HighlightData
     );
-    const [dados, setDados] = useState<HighlightCardProps>();
+
 
     async function loadTransactions() {
         const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
@@ -114,11 +120,10 @@ export function Dashboard(data: HighlightCardProps) {
         <Container>
             <Header />
             <HighlightCards
-                type={data.type}
-                data={highlightData}
-                title={data.title}
-                amount={data.amount}
-                lastTransaction={data.lastTransaction}
+                type={type}
+                title={title}
+                amount={amount}
+                lastTransaction={lastTransaction}
             />
 
             <Transactions>

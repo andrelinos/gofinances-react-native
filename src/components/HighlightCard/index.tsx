@@ -19,12 +19,11 @@ interface HighlightData {
     expensives: HighlightProps;
 }
 
-export interface HighlightCardProps {
+interface HighlightCardProps {
     title: string;
     amount: string;
     lastTransaction: string;
     type: 'income' | 'outcome' | 'total';
-    data: HighlightData;
 }
 
 const icon = {
@@ -39,6 +38,8 @@ export function HighlightCard({
     amount,
     lastTransaction
 }: HighlightCardProps) {
+    console.log(type, title, amount, lastTransaction);
+
     return (
         <Container type={type}>
             <Header>
