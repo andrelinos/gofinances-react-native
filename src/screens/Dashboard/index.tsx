@@ -27,28 +27,34 @@ export interface DataListProps extends TransactionCardDataProps {
     id: string;
 }
 
-type HighlightProps = {
-    total: string;
-};
+interface HighlightProps {
+    amount: string;
+    lastTransaction: string;
+}
 
 interface HighlightData {
     entries: HighlightProps;
     expensives: HighlightProps;
+    total: HighlightProps;
 }
 
-interface HighlightCardProps {
-    title?: string;
-    amount: string;
-    lastTransaction: string;
-    type: 'income' | 'outcome' | 'total';
-}
-
-export function Dashboard({type, title, amount, lastTransaction}: HighlightCardProps) {
+export function Dashboard() {
     const [transactions, setTransactions] = useState<DataListProps[]>([]);
     const [highlightData, setHighlightData] = useState<HighlightData>(
         {} as HighlightData
     );
 
+    function getLastTransactionDate(
+        collection: DataListProps[],
+        type: 'positive' | 'negative'
+      ){
+        const lastTransaction = new Date(
+        Math.max.apply(Math, collection
+        .filter(transaction => transaction.type === type)
+        .map(transaction => new Date(transaction.date).getTime())))
+    
+        return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', { month: 'long' })}`;
+      }
 
     async function loadTransactions() {
         const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
@@ -89,18 +95,46 @@ export function Dashboard({type, title, amount, lastTransaction}: HighlightCardP
         );
 
         setTransactions(transactionsFormated);
+
+        const lastTransactionEntries = getLastTransactionDate(
+            transactions,
+            'positive'
+        );
+        const lastTransactionExpensives = getLastTransactionDate(
+            transactions,
+            'negative'
+        );
+        const totalInterval = `01 a ${lastTransactionExpensives}`;
+
+        const total = entriesTotal - expensiveTotal;
+
         setHighlightData({
             entries: {
-                total: entriesTotal.toLocaleString('pt-BR', {
+                amount: Number(entriesTotal).toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
-                })
+                }),
+                lastTransaction:
+                    lastTransactionEntries === 0
+                        ? 'Não há entradas'
+                        : `Última entrada dia ${lastTransactionEntries}`
             },
             expensives: {
-                total: expensiveTotal.toLocaleString('pt-BR', {
+                amount: Number(expensiveTotal).toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
-                })
+                }),
+                lastTransaction:
+                    lastTransactionExpensives === 0
+                        ? 'Não há saídas'
+                        : `Última saída dia ${lastTransactionExpensives}`
+            },
+            total: {
+                amount: Number(total).toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }),
+                lastTransaction: totalInterval
             }
         });
     }
@@ -119,12 +153,7 @@ export function Dashboard({type, title, amount, lastTransaction}: HighlightCardP
     return (
         <Container>
             <Header />
-            <HighlightCards
-                type={type}
-                title={title}
-                amount={amount}
-                lastTransaction={lastTransaction}
-            />
+            <HighlightCards data={highlightData} />
 
             <Transactions>
                 <TransactionTitle>Histórico de transações</TransactionTitle>
@@ -138,3 +167,6 @@ export function Dashboard({type, title, amount, lastTransaction}: HighlightCardP
         </Container>
     );
 }
+
+
+
