@@ -123,21 +123,28 @@ export function Dashboard() {
             'outcome'
         );
 
+        if (lastTransactionEntries !== 0) {
+            if (lastTransactionEntries > lastTransactionExpensives) {
+                setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
+            }
+        }
 
-            setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
+        if (lastTransactionExpensives === 0) {
+            if (lastTransactionExpensives > lastTransactionEntries) {
+                setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
+            }
+        }
 
+        const totalInterval = totalIntervalResults;
 
-        //setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
-        // const totalInterval = totalIntervalResults;
-
-        const totalInterval =
-            lastTransactionExpensives === 0 || lastTransactionEntries === 0
-                ? 'Não há transações'
-                : `01 a ${lastTransactionExpensives}`;
+        // const totalInterval =
+        //     lastTransactionExpensives === 0 || lastTransactionEntries === 0
+        //         ? 'Não há transações'
+        //         : `01 a ${lastTransactionExpensives}`;
 
         const total = entriesTotal - expensiveTotal;
 
-        console.log('Interval'+totalInterval);
+        console.log(total)
 
         setHighlightData({
             entries: {
@@ -165,7 +172,11 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: totalInterval
+                lastTransaction:
+                    total > 0 
+                        ? `Última movimentação dia ${totalInterval}`
+                        : 'Não há movimentações'
+                        
             }
         });
 
