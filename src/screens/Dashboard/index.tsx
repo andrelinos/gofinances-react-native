@@ -44,6 +44,7 @@ export interface HighlightData {
 export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState<DataListProps[]>([]);
+    const [totalIntervalResults, setTotalIntervalResults] = useState('');
     const [highlightData, setHighlightData] = useState<HighlightData>(
         {} as HighlightData
     );
@@ -63,10 +64,14 @@ export function Dashboard() {
             )
         );
 
-        return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
-            'pt-BR',
-            { month: 'long' }
-        )}`;
+        if (!isNaN(lastTransaction.getDate())) {
+            return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
+                'pt-BR',
+                { month: 'long' }
+            )}`;
+        } else {
+            return 0;
+        }
     }
 
     async function loadTransactions() {
@@ -117,13 +122,22 @@ export function Dashboard() {
             transactions,
             'outcome'
         );
+
+
+            setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
+
+
+        //setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
+        // const totalInterval = totalIntervalResults;
+
         const totalInterval =
-            lastTransactionExpensives !== 'NaN de Invalid Date'
-                ? `01 a ${lastTransactionExpensives}`
-                : `01 a ${lastTransactionEntries}`;
+            lastTransactionExpensives === 0 || lastTransactionEntries === 0
+                ? 'Não há transações'
+                : `01 a ${lastTransactionExpensives}`;
+
         const total = entriesTotal - expensiveTotal;
 
-        console.log(totalInterval);
+        console.log('Interval'+totalInterval);
 
         setHighlightData({
             entries: {
@@ -132,7 +146,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionEntries === 'NaN de Invalid Date' || 0
+                    lastTransactionEntries === 0
                         ? 'Não há entradas'
                         : `Última entrada dia ${lastTransactionEntries}`
             },
@@ -142,7 +156,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionExpensives === 'NaN de Invalid Date' || 0
+                    lastTransactionExpensives === 0
                         ? 'Não há saídas'
                         : `Última saída dia ${lastTransactionExpensives}`
             },
@@ -151,10 +165,7 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction:
-                    lastTransactionEntries === 'NaN de Invalid Date'
-                        ? 'Sem movimentações'
-                        : totalInterval
+                lastTransaction: totalInterval
             }
         });
 
@@ -162,7 +173,7 @@ export function Dashboard() {
     }
     useEffect(() => {
         loadTransactions();
-        AsyncStorage.clear();
+        // AsyncStorage.clear();
     }, []);
 
     useFocusEffect(
