@@ -9,11 +9,7 @@ interface HighlightCardsProps {
     data: HighlightData;
 }
 
-export function HighlightCards( {data} : HighlightCardsProps) {
-    data.entries
-        ? console.log('HighlightData: ' + JSON.stringify(data))
-        : console.log('HighlightData: NADA');
-
+export function HighlightCards({ data }: HighlightCardsProps) {
     return (
         <Container>
             <HighlightCard

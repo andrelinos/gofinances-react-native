@@ -48,7 +48,7 @@ export function HighlightCard({
             </Header>
 
             <Footer>
-                <Amount type={type}>{amount && `R$ ${amount}`}</Amount>
+                <Amount type={type}>{amount && amount}</Amount>
                 <LastTransaction type={type}>
                     {lastTransaction && lastTransaction}
                 </LastTransaction>

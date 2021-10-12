@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from 'styled-components';
 
 import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
 
@@ -18,6 +20,7 @@ import {
 
 import {
     Container,
+    LoadContainer,
     Transactions,
     TransactionTitle,
     TransactionsList
@@ -39,10 +42,13 @@ export interface HighlightData {
 }
 
 export function Dashboard() {
+    const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState<DataListProps[]>([]);
     const [highlightData, setHighlightData] = useState<HighlightData>(
         {} as HighlightData
     );
+
+    const theme = useTheme();
 
     function getLastTransactionDate(
         collection: DataListProps[],
@@ -111,9 +117,13 @@ export function Dashboard() {
             transactions,
             'outcome'
         );
-        const totalInterval = `01 a ${lastTransactionExpensives}`;
-
+        const totalInterval =
+            lastTransactionExpensives !== 'NaN de Invalid Date'
+                ? `01 a ${lastTransactionExpensives}`
+                : `01 a ${lastTransactionEntries}`;
         const total = entriesTotal - expensiveTotal;
+
+        console.log(totalInterval);
 
         setHighlightData({
             entries: {
@@ -122,7 +132,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionEntries === '' || 0
+                    lastTransactionEntries === 'NaN de Invalid Date' || 0
                         ? 'Não há entradas'
                         : `Última entrada dia ${lastTransactionEntries}`
             },
@@ -132,7 +142,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionExpensives === '' || 0
+                    lastTransactionExpensives === 'NaN de Invalid Date' || 0
                         ? 'Não há saídas'
                         : `Última saída dia ${lastTransactionExpensives}`
             },
@@ -141,12 +151,18 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: totalInterval
+                lastTransaction:
+                    lastTransactionEntries === 'NaN de Invalid Date'
+                        ? 'Sem movimentações'
+                        : totalInterval
             }
         });
+
+        setIsLoading(false);
     }
     useEffect(() => {
         loadTransactions();
+        AsyncStorage.clear();
     }, []);
 
     useFocusEffect(
@@ -157,20 +173,33 @@ export function Dashboard() {
 
     return (
         <Container>
-            <Header />
-            <HighlightCards
-                data={highlightData}
-            />
+            {isLoading ? (
+                <LoadContainer>
+                    <ActivityIndicator
+                        color={theme.colors.primary}
+                        size="large"
+                    />
+                </LoadContainer>
+            ) : (
+                <>
+                    <Header />
+                    <HighlightCards data={highlightData} />
 
-            <Transactions>
-                <TransactionTitle>Histórico de transações</TransactionTitle>
+                    <Transactions>
+                        <TransactionTitle>
+                            Histórico de transações
+                        </TransactionTitle>
 
-                <TransactionsList
-                    data={transactions}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <TransactionCard data={item} />}
-                />
-            </Transactions>
+                        <TransactionsList
+                            data={transactions}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({ item }) => (
+                                <TransactionCard data={item} />
+                            )}
+                        />
+                    </Transactions>
+                </>
+            )}
         </Container>
     );
 }
