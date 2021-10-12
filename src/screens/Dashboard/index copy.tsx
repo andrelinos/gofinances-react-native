@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -46,22 +46,15 @@ export function Dashboard() {
 
     function getLastTransactionDate(
         collection: DataListProps[],
-        type: 'income' | 'outcome'
-    ) {
+        type: 'positive' | 'negative'
+      ){
         const lastTransaction = new Date(
-            Math.max.apply(
-                Math,
-                collection
-                    .filter((transaction) => transaction.type === type)
-                    .map((transaction) => new Date(transaction.date).getTime())
-            )
-        );
-
-        return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
-            'pt-BR',
-            { month: 'long' }
-        )}`;
-    }
+        Math.max.apply(Math, collection
+        .filter(transaction => transaction.type === type)
+        .map(transaction => new Date(transaction.date).getTime())))
+    
+        return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', { month: 'long' })}`;
+      }
 
     async function loadTransactions() {
         const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
@@ -105,11 +98,11 @@ export function Dashboard() {
 
         const lastTransactionEntries = getLastTransactionDate(
             transactions,
-            'income'
+            'positive'
         );
         const lastTransactionExpensives = getLastTransactionDate(
             transactions,
-            'outcome'
+            'negative'
         );
         const totalInterval = `01 a ${lastTransactionExpensives}`;
 
@@ -122,7 +115,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionEntries === '' || 0
+                    lastTransactionEntries === 0
                         ? 'Não há entradas'
                         : `Última entrada dia ${lastTransactionEntries}`
             },
@@ -132,7 +125,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionExpensives === '' || 0
+                    lastTransactionExpensives === 0
                         ? 'Não há saídas'
                         : `Última saída dia ${lastTransactionExpensives}`
             },
@@ -155,12 +148,11 @@ export function Dashboard() {
         }, [])
     );
 
+
     return (
         <Container>
             <Header />
-            <HighlightCards
-                data={highlightData}
-            />
+            <HighlightCards data={highlightData} />
 
             <Transactions>
                 <TransactionTitle>Histórico de transações</TransactionTitle>
@@ -174,3 +166,6 @@ export function Dashboard() {
         </Container>
     );
 }
+
+
+

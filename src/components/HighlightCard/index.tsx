@@ -38,7 +38,7 @@ export function HighlightCard({
     amount,
     lastTransaction
 }: HighlightCardProps) {
-    console.log(type, title, amount, lastTransaction);
+
 
     return (
         <Container type={type}>
