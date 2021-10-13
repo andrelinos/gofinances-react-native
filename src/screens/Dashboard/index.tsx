@@ -70,7 +70,7 @@ export function Dashboard() {
                 { month: 'long' }
             )}`;
         } else {
-            return 0;
+            return '0';
         }
     }
 
@@ -82,7 +82,7 @@ export function Dashboard() {
         let entriesTotal = 0;
         let expensiveTotal = 0;
 
-        const transactionsFormated: DataListProps[] = transactions.map(
+        const transactionsFormatted: DataListProps[] = transactions.map(
             (item: DataListProps) => {
                 if (item.type === 'income') {
                     entriesTotal += Number(item.amount);
@@ -112,7 +112,7 @@ export function Dashboard() {
             }
         );
 
-        setTransactions(transactionsFormated);
+        setTransactions(transactionsFormatted);
 
         const lastTransactionEntries = getLastTransactionDate(
             transactions,
@@ -123,16 +123,12 @@ export function Dashboard() {
             'outcome'
         );
 
-        if (lastTransactionEntries !== 0) {
-            if (lastTransactionEntries > lastTransactionExpensives) {
-                setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
-            }
+        if (lastTransactionEntries !== '0') {
+            setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
         }
 
-        if (lastTransactionExpensives === 0) {
-            if (lastTransactionExpensives > lastTransactionEntries) {
-                setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
-            }
+        if (lastTransactionExpensives !== '0') {
+            setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
         }
 
         const totalInterval = totalIntervalResults;
@@ -144,7 +140,7 @@ export function Dashboard() {
 
         const total = entriesTotal - expensiveTotal;
 
-        console.log(total)
+        console.log(total);
 
         setHighlightData({
             entries: {
@@ -153,7 +149,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionEntries === 0
+                    lastTransactionEntries === '0'
                         ? 'Não há entradas'
                         : `Última entrada dia ${lastTransactionEntries}`
             },
@@ -163,7 +159,7 @@ export function Dashboard() {
                     currency: 'BRL'
                 }),
                 lastTransaction:
-                    lastTransactionExpensives === 0
+                    lastTransactionExpensives === '0'
                         ? 'Não há saídas'
                         : `Última saída dia ${lastTransactionExpensives}`
             },
@@ -172,11 +168,7 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction:
-                    total > 0 
-                        ? `Última movimentação dia ${totalInterval}`
-                        : 'Não há movimentações'
-                        
+                lastTransaction: totalInterval
             }
         });
 
@@ -184,7 +176,7 @@ export function Dashboard() {
     }
     useEffect(() => {
         loadTransactions();
-        // AsyncStorage.clear();
+        // AsyncStorage.clear(); // Limpa dados
     }, []);
 
     useFocusEffect(
