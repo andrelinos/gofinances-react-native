@@ -123,20 +123,21 @@ export function Dashboard() {
             'outcome'
         );
 
-        if (lastTransactionEntries !== '0') {
-            setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
-        }
+        // if (lastTransactionEntries !== '0') {
+        //     setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
+        // }
 
-        if (lastTransactionExpensives !== '0') {
-            setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
-        }
+        // if (lastTransactionExpensives !== '0') {
+        //     setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
+        // }
 
-        const totalInterval = totalIntervalResults;
+        // const totalInterval = totalIntervalResults;
 
-        // const totalInterval =
-        //     lastTransactionExpensives === 0 || lastTransactionEntries === 0
-        //         ? 'Não há transações'
-        //         : `01 a ${lastTransactionExpensives}`;
+        const totalInterval = 
+        lastTransactionExpensives !== '0' || lastTransactionEntries !== '0'
+            ? `01 a ${lastTransactionExpensives === '0' && lastTransactionEntries}`
+            : 'Não há transações'
+            
 
         const total = entriesTotal - expensiveTotal;
 
@@ -176,7 +177,7 @@ export function Dashboard() {
     }
     useEffect(() => {
         loadTransactions();
-        // AsyncStorage.clear(); // Limpa dados
+        AsyncStorage.clear(); // Limpa dados
     }, []);
 
     useFocusEffect(
