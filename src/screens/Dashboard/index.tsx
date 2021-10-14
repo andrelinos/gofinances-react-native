@@ -133,11 +133,14 @@ export function Dashboard() {
 
         // const totalInterval = totalIntervalResults;
 
-        const totalInterval = 
-        lastTransactionExpensives !== '0' || lastTransactionEntries !== '0'
-            ? `01 a ${lastTransactionExpensives === '0' && lastTransactionEntries}`
-            : 'Não há transações'
-            
+        const totalInterval =
+            lastTransactionExpensives !== '0' || lastTransactionEntries !== '0'
+                ? `01 a ${
+                      lastTransactionExpensives === '0'
+                          ? lastTransactionEntries
+                          : lastTransactionExpensives
+                  }`
+                : 'Não há transações';
 
         const total = entriesTotal - expensiveTotal;
 
