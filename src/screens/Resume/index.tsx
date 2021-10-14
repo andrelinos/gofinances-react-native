@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+import { VictoryPie } from 'victory-native';
 
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
 
-import { Container, Header, Title, Content } from './styles';
+import { Container, Header, Title, Content, ChartContainer } from './styles';
 
 interface TransactionData {
     type: 'income' | 'outcome';
@@ -18,7 +19,8 @@ interface TransactionData {
 interface CategoryData {
     key: string;
     name: string;
-    total: string;
+    total: number;
+    totalFormatted: string;
     color: string;
 }
 
@@ -47,7 +49,7 @@ export function Resume() {
             });
 
             if (categorySum > 0) {
-                const total = categorySum.toLocaleString('pt-BR', {
+                const totalFormatted = categorySum.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
                 });
@@ -55,7 +57,8 @@ export function Resume() {
                     key: category.key,
                     name: category.name,
                     color: category.color,
-                    total
+                    total: categorySum,
+                    totalFormatted
                 });
             }
         });
@@ -74,11 +77,18 @@ export function Resume() {
             </Header>
 
             <Content>
+                <ChartContainer>
+                <VictoryPie 
+                    data={totalByCategories}
+                    x="name"
+                    y="total"
+                />
+                </ChartContainer>
                 {totalByCategories.map((item) => (
                     <HistoryCard
                         key={item.key}
                         title={item.name}
-                        amount={item.total}
+                        amount={item.totalFormatted}
                         color={item.color}
                     />
                 ))}
