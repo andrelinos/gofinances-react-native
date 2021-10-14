@@ -5,7 +5,7 @@ import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
 
-import { Container, Header, Title } from './styles';
+import { Container, Header, Title, Content } from './styles';
 
 interface TransactionData {
     type: 'income' | 'outcome';
@@ -16,6 +16,7 @@ interface TransactionData {
 }
 
 interface CategoryData {
+    key: string;
     name: string;
     total: string;
     color: string;
@@ -41,7 +42,7 @@ export function Resume() {
 
             expensives.forEach((expensive: TransactionData) => {
                 if (expensive.category === category.key) {
-                    categorySum += Number(expensives.amount);
+                    categorySum += Number(expensive.amount);
                 }
             });
 
@@ -51,6 +52,7 @@ export function Resume() {
                     currency: 'BRL'
                 });
                 totalByCategory.push({
+                    key: category.key,
                     name: category.name,
                     color: category.color,
                     total
@@ -65,21 +67,22 @@ export function Resume() {
         loadData();
     }, []);
 
-    console.log(totalByCategories)
-
     return (
         <Container>
             <Header>
                 <Title>Resumo por categoria</Title>
             </Header>
 
-            {totalByCategories.map((item) => (
-                <HistoryCard
-                    title={item.name}
-                    amount={item.total}
-                    color={item.color}
-                />
-            ))}
+            <Content>
+                {totalByCategories.map((item) => (
+                    <HistoryCard
+                        key={item.key}
+                        title={item.name}
+                        amount={item.total}
+                        color={item.color}
+                    />
+                ))}
+            </Content>
         </Container>
     );
 }

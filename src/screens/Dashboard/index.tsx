@@ -144,8 +144,6 @@ export function Dashboard() {
 
         const total = entriesTotal - expensiveTotal;
 
-        console.log(total);
-
         setHighlightData({
             entries: {
                 amount: Number(entriesTotal).toLocaleString('pt-BR', {
@@ -180,7 +178,7 @@ export function Dashboard() {
     }
     useEffect(() => {
         loadTransactions();
-        AsyncStorage.clear(); // Limpa dados
+        // AsyncStorage.clear(); // Limpa dados
     }, []);
 
     useFocusEffect(
