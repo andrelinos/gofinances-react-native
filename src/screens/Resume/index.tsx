@@ -1,8 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useCallback, useState } from 'react';
 import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from 'react-native';
 import { VictoryPie } from 'victory-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { subMonths, addMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
@@ -20,7 +23,7 @@ import {
     MonthSelectButton,
     SelectIcon,
     Month,
-
+    LoadContainer
 } from './styles';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -42,19 +45,34 @@ interface CategoryData {
 }
 
 export function Resume() {
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
         []
     );
 
     const theme = useTheme();
 
+    function handelDateChange(action: 'prev' | 'next') {
+        action === 'prev'
+            ? setSelectedDate(subMonths(selectedDate, 1))
+            : setSelectedDate(addMonths(selectedDate, 1));
+    }
+
     async function loadData() {
+        setIsLoading(true);
+        
         const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
         const response = await AsyncStorage.getItem(dataKey);
         const responseFormatted = response ? JSON.parse(response) : [];
 
         const expensives = responseFormatted.filter(
-            (expensive: TransactionData) => expensive.type === 'outcome'
+            (expensive: TransactionData) =>
+                expensive.type === 'outcome' &&
+                new Date(expensive.date).getMonth() ===
+                    selectedDate.getMonth() &&
+                new Date(expensive.date).getFullYear() ===
+                    selectedDate.getFullYear()
         );
 
         const expensivesTotal = expensives.reduce(
@@ -98,16 +116,13 @@ export function Resume() {
         });
 
         setTotalByCategories(totalByCategory);
+        setIsLoading(false);
     }
-
-    useEffect(() => {
-        loadData();
-    }, []);
 
     useFocusEffect(
         useCallback(() => {
             loadData();
-        }, [])
+        }, [selectedDate])
     );
 
     return (
@@ -124,42 +139,56 @@ export function Resume() {
                 }}
             >
                 <MonthSelect>
-                    <MonthSelectButton>
+                    <MonthSelectButton onPress={() => handelDateChange('prev')}>
                         <SelectIcon name="chevron-left" />
                     </MonthSelectButton>
-                    <Month>Outubro</Month>
-                    <MonthSelectButton>
+                    <Month>
+                        {format(selectedDate, 'MMMM, yyyy', { locale: ptBR })}
+                    </Month>
+                    <MonthSelectButton onPress={() => handelDateChange('next')}>
                         <SelectIcon name="chevron-right" />
                     </MonthSelectButton>
                 </MonthSelect>
 
-                <ChartContainer>
-                    <VictoryPie
-                        colorScale={totalByCategories.map(
-                            (caregory) => caregory.color
-                        )}
-                        style={{
-                            labels: {
-                                fontSize: RFValue(18),
-                                fontWeight: 'bold',
-                                fill: theme.colors.shape
-                            }
-                        }}
-                        labelRadius={85}
-                        labelPlacement="parallel"
-                        data={totalByCategories}
-                        x="percent"
-                        y="total"
-                    />
-                </ChartContainer>
-                {totalByCategories.map((item) => (
-                    <HistoryCard
-                        key={item.key}
-                        title={item.name}
-                        amount={item.totalFormatted}
-                        color={item.color}
-                    />
-                ))}
+                {isLoading ? (
+                    <LoadContainer>
+                        <ActivityIndicator
+                            color={theme.colors.primary}
+                            size="large"
+                        />
+                    </LoadContainer>
+                ) : (
+                    <>
+                        <ChartContainer>
+                            <VictoryPie
+                                colorScale={totalByCategories.map(
+                                    (caregory) => caregory.color
+                                )}
+                                style={{
+                                    labels: {
+                                        fontSize: RFValue(18),
+                                        fontWeight: 'bold',
+                                        fill: theme.colors.shape
+                                    }
+                                }}
+                                labelRadius={80}
+                                labelPlacement="parallel"
+                                data={totalByCategories}
+                                x="percent"
+                                y="total"
+                            />
+                        </ChartContainer>
+
+                        {totalByCategories.map((item) => (
+                            <HistoryCard
+                                key={item.key}
+                                title={item.name}
+                                amount={item.totalFormatted}
+                                color={item.color}
+                            />
+                        ))}
+                    </>
+                )}
             </Content>
         </Container>
     );
