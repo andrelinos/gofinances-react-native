@@ -13,12 +13,10 @@ import {
     Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 
-import { SafeAreaView } from './src/global/styles/styles';
-
 import theme from './src/global/styles/theme';
-import { AppRoutes } from './src/routes/app.routes';
 
 import { SignIn } from './src/screens/SignIn';
+import { AuthProvider } from './src/hooks/context/auth';
 
 export default function App() {
     const [fontsLoad] = useFonts({
@@ -39,7 +37,9 @@ export default function App() {
                         barStyle="light-content"
                         backgroundColor={theme.colors.primary}
                     />
-                    <SignIn />
+                    <AuthProvider>
+                        <SignIn />
+                    </AuthProvider>
                     <View style={{ paddingBottom: getBottomSpace() }} />
                 </ThemeProvider>
             </SafeAreaProvider>
