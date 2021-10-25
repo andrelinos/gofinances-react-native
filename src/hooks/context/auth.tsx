@@ -6,7 +6,7 @@ import {
     GOOGLE_AUTH_URL,
     GOOGLE_CLIENT_ID,
     GOOGLE_AUTH_RESPONSE_URL,
-    EXPO_REDIRECT_URL,
+    EXPO_REDIRECT_URI,
     GOOGLE_RESPONSE_TYPE,
     GOOGLE_SCOPE,
     GOOGLE_RESPONSE_ALT
@@ -46,11 +46,11 @@ function AuthProvider({ children }: AuthProviderProps) {
         try {
             const AUTH_URL = `${GOOGLE_AUTH_URL}?`;
             const CLIENT_ID = `client_id=${GOOGLE_CLIENT_ID}`;
-            const REDIRECT_URL = `&redirect_uri=${EXPO_REDIRECT_URL}`;
+            const REDIRECT_URI = `&redirect_uri=${EXPO_REDIRECT_URI}`;
             const RESPONSE_TYPE = `&response_type=${GOOGLE_RESPONSE_TYPE}`;
             const SCOPE = `&scope=${encodeURI(GOOGLE_SCOPE)}`;
 
-            const authUrl = `${AUTH_URL}${CLIENT_ID}${REDIRECT_URL}${RESPONSE_TYPE}${SCOPE}`;
+            const authUrl = `${AUTH_URL}${CLIENT_ID}${REDIRECT_URI}${RESPONSE_TYPE}${SCOPE}`;
 
             console.log(authUrl);
 

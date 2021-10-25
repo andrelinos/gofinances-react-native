@@ -18,7 +18,7 @@ Após insira suas informações de login do expo. Após isso reinicie a aplicaç
 ```ts
 declare module 'react-native-dotenv' {
   export const REACT_NATIVE_LOCALSTORAGE_KEY: string;
-  export const EXPO_REDIRECT_URL: string;
+  export const EXPO_REDIRECT_URI: string;
   export const GOOGLE_CLIENT_ID: string;
   export const GOOGLE_AUTH_RESPONSE_URL: string;
   export const GOOGLE_AUTH_URL: string;
@@ -34,7 +34,7 @@ declare module 'react-native-dotenv' {
 
 ```json
 REACT_NATIVE_LOCALSTORAGE_KEY=
-EXPO_REDIRECT_URL=
+EXPO_REDIRECT_URI=
 
 GOOGLE_CLIENT_ID=
 GOOGLE_AUTH_RESPONSE_URL=https://www.googleapis.com/oauth2/v1/userinfo
@@ -49,7 +49,7 @@ import {
     GOOGLE_AUTH_URL,
     GOOGLE_CLIENT_ID,
     GOOGLE_AUTH_RESPONSE_URL,
-    EXPO_REDIRECT_URL,
+    EXPO_REDIRECT_URI,
     GOOGLE_RESPONSE_TYPE,
     GOOGLE_SCOPE,
     GOOGLE_RESPONSE_ALT
