@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-import { useAuth } from '../../hooks/context/auth';
+import { useAuth } from '../../hooks/auth';
 
 import { SignInSocialButton } from '../../components/SignInSocialButton';
 

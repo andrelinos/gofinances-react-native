@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
-import * as AuthSession from 'expo-auth-session';
+import * as Google from 'expo-google-app-auth';
+import * as Apple from 'expo-apple-authentication';
 
 import {
     GOOGLE_AUTH_URL,
@@ -54,7 +55,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             console.log(authUrl);
 
-            const { params, type } = (await AuthSession.startAsync({
+            const { params, type } = (await Google.startAsync({
                 authUrl
             })) as AuthorizationResponse;
 
