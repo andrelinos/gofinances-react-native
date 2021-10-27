@@ -1,7 +1,8 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
-import * as Google from 'expo-google-app-auth';
-import * as Apple from 'expo-apple-authentication';
+// import * as GoogleAuthentication from 'expo-auth-session';
+import * as GoogleAuthentication from 'expo-google-app-auth';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 import {
     GOOGLE_AUTH_URL,
@@ -10,8 +11,11 @@ import {
     EXPO_REDIRECT_URI,
     GOOGLE_RESPONSE_TYPE,
     GOOGLE_SCOPE,
-    GOOGLE_RESPONSE_ALT
+    GOOGLE_RESPONSE_ALT,
+    REACT_NATIVE_LOCALSTORAGE_KEY,
+    APPLE_CLIENT_ID
 } from 'react-native-dotenv';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -29,6 +33,7 @@ interface UserProps {
 interface IAuthContextData {
     user: UserProps;
     signInWithGoogle: () => Promise<void>;
+    signInWithApple: () => Promise<void>;
 }
 
 interface AuthorizationResponse {
@@ -53,33 +58,85 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             const authUrl = `${AUTH_URL}${CLIENT_ID}${REDIRECT_URI}${RESPONSE_TYPE}${SCOPE}`;
 
-            console.log(authUrl);
+            const result = await GoogleAuthentication.logInAsync({
+                iosClientId: APPLE_CLIENT_ID,
+                androidClientId: GOOGLE_CLIENT_ID,
+                scopes: ['profile', 'email']
+            });
 
-            const { params, type } = (await Google.startAsync({
-                authUrl
-            })) as AuthorizationResponse;
+            console.log(result);
 
-            if (type === 'success') {
-                const response = await fetch(
-                    `${GOOGLE_AUTH_RESPONSE_URL}?alt=${GOOGLE_RESPONSE_ALT}&access_token=${params.access_token}`
+            // console.log(authUrl);
+
+            // const { params, type } = (await GoogleAuthentication.startAsync({
+            //     authUrl
+            // })) as AuthorizationResponse;
+
+            if (result.type === 'success') {
+                const userLogged = {
+                    id: String(result.user.id),
+                    email: result.user.email!,
+                    name: result.user.name!,
+                    photo: result.user.photoUrl!
+                };
+
+                setUser(userLogged);
+                await AsyncStorage.setItem(
+                    REACT_NATIVE_LOCALSTORAGE_KEY,
+                    JSON.stringify(userLogged)
                 );
-                const userInfo = await response.json();
-                setUser({
-                    id: userInfo.id,
-                    email: userInfo.email,
-                    name: userInfo.given_name,
-                    photo: userInfo.picture,
-                    locale: userInfo.locale,
-                    verified_email: userInfo.verified_email
-                });
             }
+
+            // if (type === 'success') {
+            //     const response = await fetch(
+            //         `${GOOGLE_AUTH_RESPONSE_URL}?alt=${GOOGLE_RESPONSE_ALT}&access_token=${params.access_token}`
+            //     );
+            //     const userInfo = await response.json();
+            //     setUser({
+            //         id: userInfo.id,
+            //         email: userInfo.email,
+            //         name: userInfo.given_name,
+            //         photo: userInfo.picture,
+            //         locale: userInfo.locale,
+            //         verified_email: userInfo.verified_email
+            //     });
+            // }
         } catch (error) {
             throw new Error(error as string);
         }
     }
 
+    async function signInWithApple() {
+        try {
+            const credential = await AppleAuthentication.signInAsync({
+                requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL
+                ]
+            });
+
+            if (credential) {
+                const userLogged = {
+                    id: String(credential.user),
+                    email: credential.email!,
+                    name: credential.fullName!.givenName!,
+                    photo: undefined!
+                };
+
+                setUser(userLogged);
+                await AsyncStorage.setItem(
+                    REACT_NATIVE_LOCALSTORAGE_KEY,
+                    JSON.stringify(userLogged)
+                );
+            }
+        } catch (error) {
+            throw new Error(error as string);
+        }
+    }
     return (
-        <AuthContext.Provider value={{ user, signInWithGoogle }}>
+        <AuthContext.Provider
+            value={{ user, signInWithGoogle, signInWithApple }}
+        >
             {children}
         </AuthContext.Provider>
     );

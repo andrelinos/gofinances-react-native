@@ -16,7 +16,7 @@ import {
 import theme from './src/global/styles/theme';
 
 import { SignIn } from './src/screens/SignIn';
-import { AuthProvider } from './src/hooks/context/auth';
+import { AuthProvider } from './src/hooks/auth';
 
 export default function App() {
     const [fontsLoad] = useFonts({

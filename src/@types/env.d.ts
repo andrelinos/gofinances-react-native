@@ -7,5 +7,6 @@ declare module 'react-native-dotenv' {
   export const GOOGLE_RESPONSE_TYPE: string;
   export const GOOGLE_SCOPE: string;
   export const GOOGLE_RESPONSE_ALT: string;
+  export const APPLE_CLIENT_ID: string;
   export const ENV: 'dev' | 'prod';
 }
