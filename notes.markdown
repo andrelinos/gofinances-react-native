@@ -17,7 +17,7 @@ Após insira suas informações de login do expo. Após isso reinicie a aplicaç
 
 ```ts
 declare module 'react-native-dotenv' {
-  export const REACT_NATIVE_LOCALSTORAGE_KEY: string;
+  export const USER_LOCAL_STORAGE_KEY: string;
   export const EXPO_REDIRECT_URI: string;
   export const GOOGLE_CLIENT_ID: string;
   export const GOOGLE_AUTH_RESPONSE_URL: string;
@@ -33,7 +33,7 @@ declare module 'react-native-dotenv' {
 - Criei o arquivo na raiz do seu projeto com o nome ``.env`` com os nomes de variáveis iguais ao do arquivo criado anteriormente.
 
 ```json
-REACT_NATIVE_LOCALSTORAGE_KEY=
+USER_LOCAL_STORAGE_KEY=
 EXPO_REDIRECT_URI=
 
 GOOGLE_CLIENT_ID=

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from 'react-native';
 import { VictoryPie } from 'victory-native';
@@ -62,7 +62,7 @@ export function Resume() {
     async function loadData() {
         setIsLoading(true);
         
-        const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
+        const dataKey = USER_LOCAL_STORAGE_KEY;
         const response = await AsyncStorage.getItem(dataKey);
         const responseFormatted = response ? JSON.parse(response) : [];
 

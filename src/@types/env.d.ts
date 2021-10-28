@@ -1,5 +1,5 @@
 declare module 'react-native-dotenv' {
-  export const REACT_NATIVE_LOCALSTORAGE_KEY: string;
+  export const USER_LOCAL_STORAGE_KEY: string;
   export const EXPO_REDIRECT_URI: string;
   export const GOOGLE_CLIENT_ID: string;
   export const GOOGLE_AUTH_RESPONSE_URL: string;

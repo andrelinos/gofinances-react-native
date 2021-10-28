@@ -9,7 +9,7 @@ import uuid from 'react-native-uuid';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 
-import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
 
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
@@ -97,7 +97,7 @@ export function Register() {
             date: new Date()
         };
 
-        const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
+        const dataKey = USER_LOCAL_STORAGE_KEY;
 
         try {
             const data = await AsyncStorage.getItem(dataKey);

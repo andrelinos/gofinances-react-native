@@ -1,11 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
+import { Routes } from './src/routes';
 import {
     useFonts,
     Poppins_400Regular,
@@ -30,19 +30,17 @@ export default function App() {
     }
 
     return (
-        <NavigationContainer>
-            <SafeAreaProvider>
-                <ThemeProvider theme={theme}>
-                    <StatusBar
-                        barStyle="light-content"
-                        backgroundColor={theme.colors.primary}
-                    />
-                    <AuthProvider>
-                        <SignIn />
-                    </AuthProvider>
-                    <View style={{ paddingBottom: getBottomSpace() }} />
-                </ThemeProvider>
-            </SafeAreaProvider>
-        </NavigationContainer>
+        <SafeAreaProvider>
+            <ThemeProvider theme={theme}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={theme.colors.primary}
+                />
+                <AuthProvider>
+                    <Routes />
+                </AuthProvider>
+                <View style={{ paddingBottom: getBottomSpace() }} />
+            </ThemeProvider>
+        </SafeAreaProvider>
     );
 }

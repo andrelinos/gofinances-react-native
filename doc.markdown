@@ -16,12 +16,12 @@ plugins: [
 - Criar pasta ``types`` e dentro dela criar o arquivo env.d.ts com as informações abaixo:
 ```js
 declare module 'react-native-dotenv' {
-  export const REACT_NATIVE_LOCALSTORAGE_KEY: string; // Nome da variável
+  export const USER_LOCAL_STORAGE_KEY: string; // Nome da variável
   export const ENV: 'dev' | 'prod'; // Caso tenha tenha informações diferentes para dev e prod
 }
 ```
 
 - Importar dentro do arquivo do projeto onde deseja acessar as variável
 ```js
-import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv'; 
+import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv'; 
 ```

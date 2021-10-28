@@ -1,7 +1,14 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import React, {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState
+} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import * as GoogleAuthentication from 'expo-auth-session';
-import * as GoogleAuthentication from 'expo-google-app-auth';
+// import * as GoogleAuthentication from 'expo-google-app-auth';
+import * as GoogleAuthentication from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
 import {
@@ -12,10 +19,9 @@ import {
     GOOGLE_RESPONSE_TYPE,
     GOOGLE_SCOPE,
     GOOGLE_RESPONSE_ALT,
-    REACT_NATIVE_LOCALSTORAGE_KEY,
+    USER_LOCAL_STORAGE_KEY,
     APPLE_CLIENT_ID
 } from 'react-native-dotenv';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -47,6 +53,7 @@ const AuthContext = createContext({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>({} as UserProps);
+    const [userStorageLoading, setUserStorageLoading] = useState(true);
 
     async function signInWithGoogle() {
         try {
@@ -58,49 +65,55 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             const authUrl = `${AUTH_URL}${CLIENT_ID}${REDIRECT_URI}${RESPONSE_TYPE}${SCOPE}`;
 
-            const result = await GoogleAuthentication.logInAsync({
-                iosClientId: APPLE_CLIENT_ID,
-                androidClientId: GOOGLE_CLIENT_ID,
-                scopes: ['profile', 'email']
-            });
+            // const result = await GoogleAuthentication.logInAsync({
+            //     iosClientId: APPLE_CLIENT_ID,
+            //     androidClientId: GOOGLE_CLIENT_ID,
+            //     scopes: ['profile', 'email']
+            // });
 
-            console.log(result);
+            // console.log(result);
 
             // console.log(authUrl);
 
-            // const { params, type } = (await GoogleAuthentication.startAsync({
-            //     authUrl
-            // })) as AuthorizationResponse;
+            const { params, type } = (await GoogleAuthentication.startAsync({
+                authUrl
+            })) as AuthorizationResponse;
 
-            if (result.type === 'success') {
+            // if (result.type === 'success') {
+            //     const userLogged = {
+            //         id: String(result.user.id),
+            //         email: result.user.email!,
+            //         name: result.user.name!,
+            //         photo: result.user.photoUrl!
+            //     };
+
+            //     setUser(userLogged);
+            //     await AsyncStorage.setItem(
+            //         USER_LOCAL_STORAGE_KEY,
+            //         JSON.stringify(userLogged)
+            //     );
+            // }
+
+            if (type === 'success') {
+                const response = await fetch(
+                    `${GOOGLE_AUTH_RESPONSE_URL}?alt=${GOOGLE_RESPONSE_ALT}&access_token=${params.access_token}`
+                );
+                const userInfo = await response.json();
+
                 const userLogged = {
-                    id: String(result.user.id),
-                    email: result.user.email!,
-                    name: result.user.name!,
-                    photo: result.user.photoUrl!
+                    id: userInfo.id,
+                    email: userInfo.email,
+                    name: userInfo.given_name,
+                    photo: userInfo.picture,
+                    locale: userInfo.locale,
+                    verified_email: userInfo.verified_email
                 };
-
                 setUser(userLogged);
                 await AsyncStorage.setItem(
-                    REACT_NATIVE_LOCALSTORAGE_KEY,
+                    USER_LOCAL_STORAGE_KEY,
                     JSON.stringify(userLogged)
                 );
             }
-
-            // if (type === 'success') {
-            //     const response = await fetch(
-            //         `${GOOGLE_AUTH_RESPONSE_URL}?alt=${GOOGLE_RESPONSE_ALT}&access_token=${params.access_token}`
-            //     );
-            //     const userInfo = await response.json();
-            //     setUser({
-            //         id: userInfo.id,
-            //         email: userInfo.email,
-            //         name: userInfo.given_name,
-            //         photo: userInfo.picture,
-            //         locale: userInfo.locale,
-            //         verified_email: userInfo.verified_email
-            //     });
-            // }
         } catch (error) {
             throw new Error(error as string);
         }
@@ -125,7 +138,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
                 setUser(userLogged);
                 await AsyncStorage.setItem(
-                    REACT_NATIVE_LOCALSTORAGE_KEY,
+                    USER_LOCAL_STORAGE_KEY,
                     JSON.stringify(userLogged)
                 );
             }
@@ -133,6 +146,21 @@ function AuthProvider({ children }: AuthProviderProps) {
             throw new Error(error as string);
         }
     }
+
+    async function loadUserStorage() {
+        const userStorage = await AsyncStorage.getItem(USER_LOCAL_STORAGE_KEY);
+
+        if (userStorage) {
+            const userLogged = JSON.parse(userStorage) as UserProps;
+            setUser(userLogged);
+        }
+        setUserStorageLoading(false);
+    }
+
+    useEffect(() => {
+        loadUserStorage();
+    }, []);
+
     return (
         <AuthContext.Provider
             value={{ user, signInWithGoogle, signInWithApple }}

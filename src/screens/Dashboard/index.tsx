@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from 'styled-components';
 
-import { REACT_NATIVE_LOCALSTORAGE_KEY } from 'react-native-dotenv';
+import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
 
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
@@ -75,7 +75,7 @@ export function Dashboard() {
     }
 
     async function loadTransactions() {
-        const dataKey = REACT_NATIVE_LOCALSTORAGE_KEY;
+        const dataKey = USER_LOCAL_STORAGE_KEY;
         const response = await AsyncStorage.getItem(dataKey);
         const transactions = response ? JSON.parse(response) : [];
 
