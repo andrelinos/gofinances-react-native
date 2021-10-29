@@ -20,6 +20,7 @@ import {
     GOOGLE_SCOPE,
     GOOGLE_RESPONSE_ALT,
     USER_LOCAL_STORAGE_KEY,
+    USER_LOCAL_STORAGE_USER_KEY,
     APPLE_CLIENT_ID
 } from 'react-native-dotenv';
 
@@ -38,8 +39,10 @@ interface UserProps {
 
 interface IAuthContextData {
     user: UserProps;
+    userStorageLoading: boolean;
     signInWithGoogle: () => Promise<void>;
     signInWithApple: () => Promise<void>;
+    signOut: () => Promise<void>;
 }
 
 interface AuthorizationResponse {
@@ -108,9 +111,11 @@ function AuthProvider({ children }: AuthProviderProps) {
                     locale: userInfo.locale,
                     verified_email: userInfo.verified_email
                 };
+
                 setUser(userLogged);
-                await AsyncStorage.setItem(
-                    USER_LOCAL_STORAGE_KEY,
+
+                  await AsyncStorage.setItem(
+                    USER_LOCAL_STORAGE_USER_KEY,
                     JSON.stringify(userLogged)
                 );
             }
@@ -147,8 +152,14 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    async function signOut() {
+        setUser({} as UserProps);
+        await AsyncStorage.removeItem(USER_LOCAL_STORAGE_USER_KEY);
+    }
     async function loadUserStorage() {
-        const userStorage = await AsyncStorage.getItem(USER_LOCAL_STORAGE_KEY);
+        const userStorage = await AsyncStorage.getItem(
+            USER_LOCAL_STORAGE_USER_KEY
+        );
 
         if (userStorage) {
             const userLogged = JSON.parse(userStorage) as UserProps;
@@ -163,7 +174,13 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     return (
         <AuthContext.Provider
-            value={{ user, signInWithGoogle, signInWithApple }}
+            value={{
+                user,
+                userStorageLoading,
+                signInWithGoogle,
+                signInWithApple,
+                signOut
+            }}
         >
             {children}
         </AuthContext.Provider>

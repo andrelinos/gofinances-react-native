@@ -79,6 +79,8 @@ export function Dashboard() {
         const response = await AsyncStorage.getItem(dataKey);
         const transactions = response ? JSON.parse(response) : [];
 
+        console.log('transactions', transactions);
+
         let entriesTotal = 0;
         let expensiveTotal = 0;
 

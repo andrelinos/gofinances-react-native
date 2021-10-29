@@ -5,7 +5,6 @@ import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
-import { Routes } from './src/routes';
 import {
     useFonts,
     Poppins_400Regular,
@@ -13,10 +12,10 @@ import {
     Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 
+import { Routes } from './src/routes';
 import theme from './src/global/styles/theme';
 
-import { SignIn } from './src/screens/SignIn';
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 export default function App() {
     const [fontsLoad] = useFonts({
@@ -25,7 +24,9 @@ export default function App() {
         Poppins_700Bold
     });
 
-    if (!fontsLoad) {
+    const { userStorageLoading } = useAuth();
+
+    if (!fontsLoad || userStorageLoading) {
         return <AppLoading />;
     }
 
