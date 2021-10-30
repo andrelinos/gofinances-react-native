@@ -24,6 +24,8 @@ import {
     APPLE_CLIENT_ID
 } from 'react-native-dotenv';
 
+import theme from '../global/styles/theme';
+
 interface AuthProviderProps {
     children: ReactNode;
 }
@@ -114,7 +116,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
                 setUser(userLogged);
 
-                  await AsyncStorage.setItem(
+                await AsyncStorage.setItem(
                     USER_LOCAL_STORAGE_USER_KEY,
                     JSON.stringify(userLogged)
                 );
@@ -134,11 +136,17 @@ function AuthProvider({ children }: AuthProviderProps) {
             });
 
             if (credential) {
+                const name = credential.fullName!.givenName!;
+                const bg = theme.colors.shape;
+                const color = theme.colors.primary;
+
+                const photo = `https://ui-avatars.com/api/?name=${name}&background=${bg}&color=${color}&length=1`;
+
                 const userLogged = {
                     id: String(credential.user),
                     email: credential.email!,
-                    name: credential.fullName!.givenName!,
-                    photo: undefined!
+                    name,
+                    photo
                 };
 
                 setUser(userLogged);

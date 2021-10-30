@@ -29,8 +29,8 @@ export function SignIn() {
     const theme = useTheme();
 
     async function handleSignInWithGoogle() {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             return await signInWithGoogle();
         } catch (error) {
             console.log(error);
@@ -40,8 +40,8 @@ export function SignIn() {
         }
     }
     async function handleSignInWithApple() {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             return await signInWithApple();
         } catch (error) {
             console.log(error);
