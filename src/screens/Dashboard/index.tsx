@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from 'styled-components';
 
 import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
+
+import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
@@ -44,12 +46,12 @@ export interface HighlightData {
 export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState<DataListProps[]>([]);
-    const [totalIntervalResults, setTotalIntervalResults] = useState('');
     const [highlightData, setHighlightData] = useState<HighlightData>(
         {} as HighlightData
     );
 
     const theme = useTheme();
+    const { user } = useAuth();
 
     function getLastTransactionDate(
         collection: DataListProps[],
@@ -75,11 +77,9 @@ export function Dashboard() {
     }
 
     async function loadTransactions() {
-        const dataKey = USER_LOCAL_STORAGE_KEY;
+        const dataKey = USER_LOCAL_STORAGE_KEY + `:${user.id}`;
         const response = await AsyncStorage.getItem(dataKey);
         const transactions = response ? JSON.parse(response) : [];
-
-        console.log('transactions', transactions);
 
         let entriesTotal = 0;
         let expensiveTotal = 0;
@@ -124,16 +124,6 @@ export function Dashboard() {
             transactions,
             'outcome'
         );
-
-        // if (lastTransactionEntries !== '0') {
-        //     setTotalIntervalResults(`01 a ${lastTransactionEntries}`);
-        // }
-
-        // if (lastTransactionExpensives !== '0') {
-        //     setTotalIntervalResults(`01 a ${lastTransactionExpensives}`);
-        // }
-
-        // const totalInterval = totalIntervalResults;
 
         const totalInterval =
             lastTransactionExpensives !== '0' || lastTransactionEntries !== '0'

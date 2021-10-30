@@ -6,10 +6,11 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import uuid from 'react-native-uuid';
 
+import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
+
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-
-import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
+import { useAuth } from '../../hooks/auth';
 
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
@@ -50,6 +51,8 @@ const schema = Yup.object({
 export function Register() {
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+
+    const { user } = useAuth();
 
     const [category, setCategory] = useState({
         key: 'category',
@@ -97,7 +100,7 @@ export function Register() {
             date: new Date()
         };
 
-        const dataKey = USER_LOCAL_STORAGE_KEY;
+        const dataKey = USER_LOCAL_STORAGE_KEY + `:${user.id}`;
 
         try {
             const data = await AsyncStorage.getItem(dataKey);

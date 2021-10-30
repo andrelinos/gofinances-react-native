@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from 'react-native';
 import { VictoryPie } from 'victory-native';
@@ -7,8 +6,12 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { subMonths, addMonths, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { USER_LOCAL_STORAGE_KEY } from 'react-native-dotenv';
+
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
+
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
@@ -52,6 +55,7 @@ export function Resume() {
     );
 
     const theme = useTheme();
+    const { user } = useAuth();
 
     function handelDateChange(action: 'prev' | 'next') {
         action === 'prev'
@@ -61,8 +65,8 @@ export function Resume() {
 
     async function loadData() {
         setIsLoading(true);
-        
-        const dataKey = USER_LOCAL_STORAGE_KEY;
+
+        const dataKey = USER_LOCAL_STORAGE_KEY + `:${user.id}`;
         const response = await AsyncStorage.getItem(dataKey);
         const responseFormatted = response ? JSON.parse(response) : [];
 
