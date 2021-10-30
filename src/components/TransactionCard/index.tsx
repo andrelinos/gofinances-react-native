@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import { categories } from '../../utils/categories';
 
 import {
     Container,
+    Head,
     Title,
+    ButtonOption,
+    IconOption,
+    PopUpMenu,
+    MenuItemButton,
+    MenuItemTitle,
     Footer,
     Category,
     Amount,
@@ -25,11 +32,34 @@ interface TransactionCardProps {
 }
 
 export function TransactionCard({ data }: TransactionCardProps) {
+    const [popupMenu, setPopUpMenu] = useState(false);
     const [category] = categories.filter((item) => item.key === data.category);
+
+    function handlePopUpMenu() {
+        setPopUpMenu(!popupMenu);
+    }
 
     return (
         <Container>
-            <Title>{data.name}</Title>
+            <Head>
+                <Title>{data.name}</Title>
+
+                <ButtonOption onPress={handlePopUpMenu}>
+                    <IconOption name="dots-vertical" />
+                </ButtonOption>
+
+                {popupMenu && (
+                    <PopUpMenu>
+                        <MenuItemButton>
+                            <MenuItemTitle>Editar</MenuItemTitle>
+                        </MenuItemButton>
+
+                        <MenuItemButton>
+                            <MenuItemTitle>Apagar</MenuItemTitle>
+                        </MenuItemButton>
+                    </PopUpMenu>
+                )}
+            </Head>
             <Amount type={data.type}>
                 {data.type === 'outcome' && '- '}
                 {data.amount}
