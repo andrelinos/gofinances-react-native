@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 // import { getBottomSpace } from 'react-native-iphone-x-helper';
 
-import { DataListProps } from './index';
+import { DataListProps } from '.';
 
 export const Container = styled.View`
     flex: 1;
