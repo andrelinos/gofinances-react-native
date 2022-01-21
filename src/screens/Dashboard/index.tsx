@@ -170,7 +170,7 @@ export function Dashboard() {
     }
     useEffect(() => {
         loadTransactions();
-        // AsyncStorage.clear(); // Limpa dados
+        AsyncStorage.clear(); // Limpa dados
     }, []);
 
     useFocusEffect(
