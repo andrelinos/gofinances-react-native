@@ -3,38 +3,40 @@ import { render } from '@testing-library/react-native';
 
 import { Profile } from '../../screens/Profile';
 
-// Para saber de o elemento existe
-test('check if show correctly user input name placeholder', () => {
-    const { getByPlaceholderText } = render(<Profile />);
+describe('Profile Screen', () => {
+    // Para saber de o elemento existe
+    it('should be correctly placeholder in user name input', () => {
+        const { getByPlaceholderText } = render(<Profile />);
 
-    const inputName = getByPlaceholderText('Nome');
+        const inputName = getByPlaceholderText('Nome');
 
-    expect(inputName).toBeTruthy();
-});
+        expect(inputName).toBeTruthy();
+    });
 
-// Verifica se o item existe pelo ID específico do componente
-test('check if show correctly user input surname placeholder', () => {
-    const { getByTestId } = render(<Profile />);
+    // Verifica se o item existe pelo ID específico do componente
+    it('should be correctly placeholder in input user surname', () => {
+        const { getByTestId } = render(<Profile />);
 
-    const inputName = getByTestId('input-surname');
+        const inputName = getByTestId('input-surname');
 
-    expect(inputName.props.placeholder).toEqual('Sobrenome');
-});
+        expect(inputName.props.placeholder).toEqual('Sobrenome');
+    });
 
-test('check if show correctly user input surname placeholder', () => {
-    const { getByTestId } = render(<Profile />);
+    it('should be loaded user data', () => {
+        const { getByTestId } = render(<Profile />);
 
-    const inputName = getByTestId('input-name');
-    const inputSurname = getByTestId('input-surname');
+        const inputName = getByTestId('input-name');
+        const inputSurname = getByTestId('input-surname');
 
-    expect(inputName.props.value).toEqual('Andrelino');
-    expect(inputSurname.props.value).toEqual('Silva');
-});
+        expect(inputName.props.value).toEqual('Andrelino');
+        expect(inputSurname.props.value).toEqual('Silva');
+    });
 
-test('check if title render correctly', () => {
-    const { getByTestId } = render(<Profile />);
+    it('should be exist title correctly', () => {
+        const { getByTestId } = render(<Profile />);
 
-    const titleProfile = getByTestId('title-profile');
+        const titleProfile = getByTestId('title-profile');
 
-    expect(titleProfile.props.children).toContain('Profile');
+        expect(titleProfile.props.children).toContain('Profile');
+    });
 });
