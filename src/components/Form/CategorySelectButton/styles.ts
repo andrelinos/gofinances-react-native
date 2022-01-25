@@ -29,3 +29,9 @@ export const Icon = styled(Feather)`
     font-size: ${RFValue(20)}px;
     color: ${({ theme }) => theme.colors.text};
 `;
+
+export const IconFeather = styled(Feather)`
+    color: ${({ theme }) => theme.colors.text};
+    font-size: ${RFValue(18)}px;
+    margin-right: 10px;
+`;

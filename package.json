@@ -41,6 +41,7 @@
     "react-native-unimodules": "~0.15.0",
     "react-native-uuid": "^2.0.1",
     "react-native-web": "0.17.1",
+    "react-test-renderer": "16.14.0",
     "styled-components": "^5.3.1",
     "victory-native": "^35.5.5",
     "yup": "^0.32.9"
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@testing-library/jest-native": "^4.0.4",
+    "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/react-native": "^9.0.0",
     "@types/jest": "^27.4.0",
     "@types/react": "~17.0.21",
