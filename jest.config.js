@@ -1,5 +1,6 @@
 module.exports = {
     preset: 'jest-expo',
+    setupFiles: ['<rootDir>/jestSetupFile.js'],
     testPathIgnorePatterns: ['/node_modules', '/android', '/ios'],
     setupFilesAfterEnv: [
         '@testing-library/jest-native/extend-expect',
@@ -11,6 +12,8 @@ module.exports = {
     ],
     collectCoverage: true,
     collectCoverageFrom: [
+        'src/**/.tsx',
+        '!src/**/*.spec.tsx',
         '**/*.{js,jsx}',
         '!**/index.js',
         '!**/coverage/**',
@@ -19,5 +22,6 @@ module.exports = {
         '!**/jest.setup.js',
         '!**/jest.config.js',
         '!**/metro.config.js'
-    ]
+    ],
+    coverageReporters: ['lcov']
 };
