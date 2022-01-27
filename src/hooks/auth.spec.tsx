@@ -1,14 +1,16 @@
-import React from 'react';
-import { render } from '@testing-library/react-native';
-import { renderHook } from '@testing-library/react-hooks';
-
+import { renderHook, act } from '@testing-library/react-hooks';
 import { AuthProvider, useAuth } from './auth';
 
+jest.mock('expo-auth-session', () => {});
+
 describe('Auth Hook', () => {
-    it('should be able to signin in whit Google account existing', () => {
+    it('should be able to signin in whit Google account existing', async () => {
         const { result } = renderHook(() => useAuth(), {
             wrapper: AuthProvider
         });
-        console.log(result);
+
+        await act(() => result.current.signInWithGoogle());
+
+        expect(result.current.user).toBeTruthy();
     });
 });
