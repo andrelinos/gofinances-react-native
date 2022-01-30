@@ -70,34 +70,9 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             const authUrl = `${AUTH_URL}${CLIENT_ID}${REDIRECT_URI}${RESPONSE_TYPE}${SCOPE}`;
 
-            // const result = await GoogleAuthentication.logInAsync({
-            //     iosClientId: APPLE_CLIENT_ID,
-            //     androidClientId: GOOGLE_CLIENT_ID,
-            //     scopes: ['profile', 'email']
-            // });
-
-            // console.log(result);
-
-            // console.log(authUrl);
-
             const { params, type } = (await GoogleAuthentication.startAsync({
                 authUrl
             })) as AuthorizationResponse;
-
-            // if (result.type === 'success') {
-            //     const userLogged = {
-            //         id: String(result.user.id),
-            //         email: result.user.email!,
-            //         name: result.user.name!,
-            //         photo: result.user.photoUrl!
-            //     };
-
-            //     setUser(userLogged);
-            //     await AsyncStorage.setItem(
-            //         USER_LOCAL_STORAGE_KEY,
-            //         JSON.stringify(userLogged)
-            //     );
-            // }
 
             if (type === 'success') {
                 const response = await fetch(
