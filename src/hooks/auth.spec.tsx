@@ -1,51 +1,82 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import { mocked } from 'ts-jest/utils';
-import { AuthProvider, useAuth } from './auth';
-import { startAsync } from 'expo-auth-session';
 import fetchMock from 'jest-fetch-mock';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-jest.mock('expo-auth-session', () => {
-    return {
-        startAsync: () => {
-            return {
-                type: 'success',
-                params: {
-                    access_token: 'google-token'
-                }
-            };
-        }
-    };
-});
-
 fetchMock.enableMocks();
 
-describe('Auth Hook', () => {
-    beforeEach(async () => {
-        const useCollectionKey = '@GoFinances:user';
-        await AsyncStorage.removeItem(useCollectionKey);
-    });
+import { renderHook, act } from '@testing-library/react-hooks';
+import * as AuthSession from 'expo-auth-session';
 
-    it('should be able to signin in whit Google account existing', async () => {
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                json: () =>
-                    Promise.resolve({
-                        id: 'userInfo.id',
-                        email: 'userInfo.email',
-                        name: 'userInfo.name',
-                        photo: 'userInfo.photo',
-                        locale: 'userInfo.locale',
-                        verified_email: 'userInfo.verified_email'
-                    })
-            })
-        ) as jest.Mock;
+import { AuthProvider, useAuth } from './auth';
+import { not } from 'react-native-reanimated';
+
+const userTest = {
+    id: 'any_id',
+    email: 'john.doe@email.com',
+    name: 'John Doe',
+    photo: 'any_photo.png'
+};
+
+jest.mock('expo-auth-session');
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+    getItem: jest.fn(),
+    setItem: jest.fn()
+}));
+
+describe('Auth Hook', () => {
+    it('should be able to sign in with Google account existing', async () => {
+        fetchMock.mockResponseOnce(JSON.stringify(userTest));
+        const googleMocked = jest.mocked(AuthSession.startAsync as any);
+        googleMocked.mockReturnValueOnce({
+            type: 'success',
+            params: {
+                access_token: 'any_token'
+            }
+        });
+
         const { result } = renderHook(() => useAuth(), {
             wrapper: AuthProvider
         });
 
         await act(() => result.current.signInWithGoogle());
 
-        expect(result.current.user.email).toBe('userInfo.email');
+        console.log('SUCCESS: => ', result.current.user);
+
+        expect(result.current.user.email).toBe('john.doe@email.com');
+    });
+
+    it('user should not connect if cancel authentication with Google', async () => {
+        fetchMock.mockResponseOnce(JSON.stringify(userTest));
+        const googleMocked = jest.mocked(AuthSession.startAsync);
+
+        googleMocked.mockReturnValue({
+            type: 'cancel',
+            params: {
+                access_token: ''
+            }
+        } as any);
+
+        const { result } = renderHook(() => useAuth(), {
+            wrapper: AuthProvider
+        });
+
+        await act(() => result.current.signInWithGoogle());
+
+        console.log('CANCEL: => ', result.current.user);
+
+        expect(result.current.user).not.toHaveProperty('id');
+    });
+
+    it('should be error with incorrectly Google parameters', async () => {
+        const { result } = renderHook(() => useAuth(), {
+            wrapper: AuthProvider
+        });
+
+        try {
+            await act(() => result.current.signInWithGoogle());
+
+            console.log('CORRECT: => ', result.current.user);
+        } catch {
+            expect(result.current.user).toEqual({});
+            console.log('INCORRECT: => ', result.current.user);
+        }
     });
 });
