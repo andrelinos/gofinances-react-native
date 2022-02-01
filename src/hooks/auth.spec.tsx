@@ -24,8 +24,11 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 describe('Auth Hook', () => {
     it('should be able to sign in with Google account existing', async () => {
         fetchMock.mockResponseOnce(JSON.stringify(userTest));
-        const googleMocked = jest.mocked(AuthSession.startAsync as any);
-        googleMocked.mockReturnValueOnce({
+        const mockedGoogle = jest.mocked(AuthSession.startAsync as any);
+
+        console.log('MOCKED GOOGLE: => ', [mockedGoogle]);
+
+        mockedGoogle.mockReturnValueOnce({
             type: 'success',
             params: {
                 access_token: 'any_token'
@@ -38,16 +41,18 @@ describe('Auth Hook', () => {
 
         await act(() => result.current.signInWithGoogle());
 
-        console.log('SUCCESS: => ', result.current.user);
+        console.table([result.current.user]);
 
         expect(result.current.user.email).toBe('john.doe@email.com');
     });
 
     it('user should not connect if cancel authentication with Google', async () => {
         fetchMock.mockResponseOnce(JSON.stringify(userTest));
-        const googleMocked = jest.mocked(AuthSession.startAsync);
+        const mockedGoogle = jest.mocked(AuthSession.startAsync);
 
-        googleMocked.mockReturnValue({
+        console.log('MOCKED GOOGLE: => ', mockedGoogle);
+
+        mockedGoogle.mockReturnValue({
             type: 'cancel',
             params: {
                 access_token: ''
@@ -60,7 +65,7 @@ describe('Auth Hook', () => {
 
         await act(() => result.current.signInWithGoogle());
 
-        console.log('CANCEL: => ', result.current.user);
+        console.table([result.current.user]);
 
         expect(result.current.user).not.toHaveProperty('id');
     });
