@@ -10,15 +10,13 @@ const Providers: React.FC = ({ children }) => (
 );
 
 describe('Register Screen', () => {
-    it('should be open category modal when user click on button', () => {
-        const { getByTestId } = render(<Register />, {
-            wrapper: Providers
-        });
-
-        const categoryModal = getByTestId('modal-category');
-
-        console.log(categoryModal);
-
-        expect(categoryModal.props.visible).toBeFalsy();
-    });
+    // it('should be open category modal when user click on button', () => {
+    //     const { getByTestId } = render(<Register />, {
+    //         wrapper: Providers
+    //     });
+    //     const categoryModal = getByTestId('modal-category');
+    //     const buttonCategory = getByTestId('button-category');
+    //     // expect(categoryModal.props.visible).toBeFalsy();
+    //     // expect(categoryModal.props.visible).toBeFalsy();
+    // });
 });
