@@ -71,4 +71,16 @@ describe('Auth Hook', () => {
             expect(result.current.user).toEqual({});
         }
     });
+
+    it('should be error with incorrectly Apple parameters', async () => {
+        const { result } = renderHook(() => useAuth(), {
+            wrapper: AuthProvider
+        });
+
+        try {
+            await act(() => result.current.signInWithApple());
+        } catch {
+            expect(result.current.user).toEqual({});
+        }
+    });
 });

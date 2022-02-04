@@ -28,8 +28,8 @@ describe('Profile Screen', () => {
         const inputName = getByTestId('input-name');
         const inputSurname = getByTestId('input-surname');
 
-        expect(inputName.props.value).toEqual('Andrelino');
-        expect(inputSurname.props.value).toEqual('Silva');
+        expect(inputName.props.value).toEqual('John');
+        expect(inputSurname.props.value).toEqual('Doe');
     });
 
     it('should be exist title correctly', () => {

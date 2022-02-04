@@ -10,13 +10,13 @@ export function Profile() {
                 testID="input-name"
                 placeholder="Nome"
                 autoCorrect={false}
-                value="Andrelino"
+                value="John"
             />
             <TextInput
                 testID="input-surname"
                 placeholder="Sobrenome"
                 autoCorrect={false}
-                value="Silva"
+                value="Doe"
             />
             <Button testID="button-title" title="Salvar" onPress={() => {}} />
         </View>

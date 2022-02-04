@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Register } from '.';
 import { ThemeProvider } from 'styled-components/native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
+
+import { Register } from '.';
+
 import theme from '../../global/styles/theme';
 
 jest.mock('@react-navigation/native', () => {

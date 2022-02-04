@@ -12,7 +12,7 @@ module.exports = {
     ],
     collectCoverage: true,
     collectCoverageFrom: [
-        'src/**/.tsx',
+        'src/**/*.tsx',
         '!src/**/*.spec.tsx',
         '**/*.{js,jsx}',
         '!**/index.js',

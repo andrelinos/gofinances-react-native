@@ -38,6 +38,10 @@ npm-debug.log
 yarn-error.log
 yarn.lock
 
+# Coverage tests
+coverage/
+
+
 # BUCK
 buck-out/
 \.buckd/
